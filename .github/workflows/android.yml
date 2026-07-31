@@ -18,11 +18,11 @@ jobs:
           java-version: "17"
 
       - name: Autoriser Gradle
-        working-directory: livraisonfactureandroid
+        working-directory: livraisonFactureandroid
         run: chmod +x gradlew
 
       - name: Compiler l'APK
-        working-directory: livraisonfactureandroid
+        working-directory: livraisonFactureandroid
         run: ./gradlew assembleDebug
 
       - name: Rechercher l'APK
