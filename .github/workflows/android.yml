@@ -1,37 +1,36 @@
 name: Build APK
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: LivraisonFactureAndroid
-
     steps:
-      - name: Télécharger le code
+      - name: Télécharger le projet
         uses: actions/checkout@v4
 
       - name: Installer Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: "17"
 
-      - name: Donner les droits à Gradle
+      - name: Autoriser Gradle
+        working-directory: livraisonfactureandroid
         run: chmod +x gradlew
 
       - name: Compiler l'APK
+        working-directory: livraisonfactureandroid
         run: ./gradlew assembleDebug
 
-      - name: Publier l'APK
+      - name: Rechercher l'APK
+        run: find . -type f -name "*.apk"
+
+      - name: Enregistrer l'APK
         uses: actions/upload-artifact@v4
         with:
-          name: APK
-          path: LivraisonFactureAndroid/app/build/outputs/apk/debug/app-debug.apk
+          name: application-debug
+          path: "**/build/outputs/apk/**/*.apk"
+          if-no-files-found: error
